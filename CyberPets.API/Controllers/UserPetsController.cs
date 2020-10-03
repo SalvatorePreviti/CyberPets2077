@@ -40,16 +40,19 @@ namespace CyberPets.API.Controllers
         }
 
         [HttpDelete]
+        [Route("{id}")]
         public async void Delete([Required] Guid id)
         {
         }
 
         [HttpPut]
+        [Route("{id}/caress")]
         public async void Caress([Required] Guid id)
         {
         }
 
         [HttpPut]
+        [Route("{id}/feed")]
         public async void Feed([Required] Guid id)
         {
         }

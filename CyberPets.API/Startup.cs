@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 
 namespace CyberPets.API
 {
@@ -25,6 +26,10 @@ namespace CyberPets.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            // Add Swashbuckle swagger generator for live documentation
+            services.AddMvc();
+            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +48,9 @@ namespace CyberPets.API
             {
                 endpoints.MapControllers();
             });
+
+            // Add Swashbuckle swagger generator for live documentation
+            app.UseSwagger().UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CyberPets.API"));
         }
     }
 }
