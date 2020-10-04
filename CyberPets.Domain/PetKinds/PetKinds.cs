@@ -10,7 +10,7 @@ namespace CyberPets.Domain
 
         public PetKinds(IEnumerable<PetKind> kinds)
         {
-            _byName = new Dictionary<string, PetKind>(kinds.Select(kind => KeyValuePair.Create(kind.Name, kind)));
+            _byName = new Dictionary<string, PetKind>(kinds.Select(kind => KeyValuePair.Create(kind.Name, kind)), StringComparer.InvariantCultureIgnoreCase);
         }
 
         public PetKind GetByName(string name) => _byName.GetValueOrDefault(name);

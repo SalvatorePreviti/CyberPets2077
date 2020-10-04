@@ -5,7 +5,6 @@ using CyberPets.Domain;
 using CyberPets.API.Models;
 using CyberPets.API.Models.UserPets;
 using CyberPets.API.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CyberPets.API.Controllers
@@ -26,22 +25,17 @@ namespace CyberPets.API.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ListResponse<UserPetResponse>> List([FromRoute] UserRequest request)
+        public async Task<ListResponse<UserPetResponse>> List([FromForm] UserRequest userRequest)
         {
-            var pets = await _userPetsService.List(request.UserId);
+            var pets = await _userPetsService.List(userRequest.UserId);
             var now = _timeProvider.Now();
             return new ListResponse<UserPetResponse> { List = pets.Select(pet => pet.ToUserPetResponse(now)) };
         }
 
         [HttpGet, Route("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<UserPetResponse>> GetOne([FromRoute] UserPetsRouteRequest request)
+        public async Task<ActionResult<UserPetResponse>> GetOne([FromForm] UserRequest userRequest, [FromRoute] Guid id)
         {
-            var pet = await _userPetsService.GetOne(request.UserId, request.Id);
+            var pet = await _userPetsService.GetOne(userRequest.UserId, id);
             if (pet == null)
             {
                 return NotFound("Pet not found");
@@ -50,27 +44,21 @@ namespace CyberPets.API.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<UserPetResponse>> Create([FromRoute] UserPetsCreateRequest request)
+        public async Task<ActionResult<UserPetResponse>> Create([FromForm] UserRequest userRequest, [FromBody] UserPetsCreateRequest request)
         {
             var petKind = _petKinds.GetByName(request.Kind);
             if (petKind == null)
             {
-                return BadRequest("Unknown pet kind");
+                return BadRequest("Unknown pet kind.");
             }
-            var pet = await _userPetsService.Create(request.UserId, Guid.NewGuid(), petKind);
-            return Ok(pet);
+            var pet = await _userPetsService.Create(userRequest.UserId, Guid.NewGuid(), petKind);
+            return Ok(pet.ToUserPetResponse(_timeProvider.Now()));
         }
 
         [HttpDelete, Route("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> Delete([FromRoute] UserPetsRouteRequest request)
+        public async Task<ActionResult> Delete([FromForm] UserRequest userRequest, [FromRoute] Guid id)
         {
-            if (!await _userPetsService.DeleteOne(request.UserId, request.Id))
+            if (!await _userPetsService.DeleteOne(userRequest.UserId, id))
             {
                 return NotFound();
             }
@@ -78,13 +66,9 @@ namespace CyberPets.API.Controllers
         }
 
         [HttpPut, Route("{id}/caress")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> Caress([FromRoute] UserPetsRouteRequest request)
+        public async Task<ActionResult> Caress([FromForm] UserRequest userRequest, [FromRoute] Guid id)
         {
-            var pet = await _userPetsService.GetOne(request.UserId, request.Id);
+            var pet = await _userPetsService.GetOne(userRequest.UserId, id);
             if (pet == null)
             {
                 return NotFound();
@@ -97,13 +81,9 @@ namespace CyberPets.API.Controllers
         }
 
         [HttpPut, Route("{id}/feed")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> Feed([FromRoute] UserPetsRouteRequest request)
+        public async Task<ActionResult> Feed([FromForm] UserRequest userRequest, [FromRoute] Guid id)
         {
-            var pet = await _userPetsService.GetOne(request.UserId, request.Id);
+            var pet = await _userPetsService.GetOne(userRequest.UserId, id);
             if (pet == null)
             {
                 return NotFound();
