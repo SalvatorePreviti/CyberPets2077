@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using CyberPets.Infrastructure;
+using CyberPets.Domain;
+using CyberPets.API.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
 namespace CyberPets.API
@@ -27,6 +27,11 @@ namespace CyberPets.API
         {
             services.AddControllers();
 
+            services.AddSingleton<IUserPetsRepository, UserPetsInMemoryRepository>();
+            services.AddSingleton<ITimeProvider, SystemTimeProvider>();
+            services.AddSingleton<PetKinds>(new PetKinds(PetKind.KnownKinds));
+            services.AddSingleton<UserPetsService>();
+
             // Add Swashbuckle swagger generator for live documentation
             services.AddMvc();
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo()));
@@ -42,15 +47,13 @@ namespace CyberPets.API
 
             app.UseRouting();
 
-            app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
 
             // Add Swashbuckle swagger generator for live documentation
-            app.UseSwagger().UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CyberPets.API"));
+            app.UseSwagger().UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CyberPets.Api"));
         }
     }
 }

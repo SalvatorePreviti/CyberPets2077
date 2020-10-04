@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CyberPets.API\CyberPets.API.csproj" />
+    <ProjectReference Include="..\CyberPets.Domain\CyberPets.Domain.csproj" />
   </ItemGroup>
 
 </Project>

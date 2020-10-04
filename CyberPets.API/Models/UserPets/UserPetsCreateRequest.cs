@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace CyberPets.API.Dtos.UserPets
+namespace CyberPets.API.Models.UserPets
 {
-    public class CreateUserPetRequest
+    public class UserPetsCreateRequest : UserRequest
     {
         [Required]
         public string Kind { get; set; }

@@ -1,9 +1,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace CyberPets.API.Dtos.UserPets
+namespace CyberPets.API.Models.UserPets
 {
-    public class GetUserPetResponse
+    public class UserPetResponse
     {
         public Guid Id { get; set; }
 
@@ -12,10 +12,8 @@ namespace CyberPets.API.Dtos.UserPets
 
         public DateTime CreationDate { get; set; }
 
-        [Range(Constants.MinPetMetricValue, Constants.MaxPetMetricValue)]
         public int Hunger { get; set; }
 
-        [Range(Constants.MinPetMetricValue, Constants.MaxPetMetricValue)]
         public int Happiness { get; set; }
     }
 }
