@@ -92,7 +92,7 @@ namespace CyberPets.API.Controllers
         }
 
         [HttpPut, Route("{id}/caress")]
-        public async Task<ActionResult<int>> Caress(
+        public async Task<ActionResult<bool>> Caress(
             [FromHeader(Name = UserIdHeader), Required] string userId,
             [FromRoute] Guid id
         )
@@ -108,7 +108,7 @@ namespace CyberPets.API.Controllers
         }
 
         [HttpPut, Route("{id}/feed")]
-        public async Task<ActionResult<int>> Feed(
+        public async Task<ActionResult<bool>> Feed(
             [FromHeader(Name = UserIdHeader), Required] string userId,
             [FromRoute] Guid id
         )
