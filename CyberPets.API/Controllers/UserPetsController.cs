@@ -20,10 +20,10 @@ namespace CyberPets.API.Controllers
         public const string UserIdHeader = "X-USER-ID";
 
         private readonly ITimeProvider _timeProvider;
-        private readonly PetKinds _petKinds;
+        private readonly PetKindsList _petKinds;
         private readonly UserPetsService _userPetsService;
 
-        public UserPetsController(ITimeProvider timeProvider, PetKinds petKinds, UserPetsService userPetsService)
+        public UserPetsController(ITimeProvider timeProvider, PetKindsList petKinds, UserPetsService userPetsService)
         {
             _timeProvider = timeProvider;
             _petKinds = petKinds;

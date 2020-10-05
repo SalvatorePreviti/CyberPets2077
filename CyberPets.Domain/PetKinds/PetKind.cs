@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace CyberPets.Domain.PetKinds
 {
+    /// <summary>
+    /// Enumeration class pattern
+    /// </summary>
     public class PetKind
     {
         public string Name { get; private set; }
@@ -11,7 +14,7 @@ namespace CyberPets.Domain.PetKinds
 
         public double HappinessRateInSeconds { get; private set; }
 
-        public PetKind(string name, int hungerRateInSeconds, double happinessRateInSeconds)
+        public PetKind(string name, double hungerRateInSeconds, double happinessRateInSeconds)
         {
             if (String.IsNullOrWhiteSpace(name)) { throw new ArgumentNullException(nameof(name)); }
             if (hungerRateInSeconds <= 0) { throw new ArgumentOutOfRangeException(nameof(hungerRateInSeconds)); }

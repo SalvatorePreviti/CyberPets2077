@@ -27,12 +27,12 @@ namespace CyberPets.Domain.UserPets
             HappinessMetric = happinessMetric ?? new UserPetMetricValue(creationDate);
         }
 
-        public int GetHunger(DateTime now) => HungerMetric.GetValue(now, -Kind.HungerRateInSeconds);
+        public int GetHunger(DateTime now) => HungerMetric.GetValue(now, Kind.HungerRateInSeconds);
 
-        public UserPetMetricValue UpdatedHunger(DateTime now, double amount) => HungerMetric.Updated(now, -Kind.HungerRateInSeconds, -amount);
+        public UserPetMetricValue UpdatedHunger(DateTime now, double amount) => HungerMetric.Updated(now, Kind.HungerRateInSeconds, -amount);
 
-        public int GetHappiness(DateTime now) => HappinessMetric.GetValue(now, Kind.HappinessRateInSeconds);
+        public int GetHappiness(DateTime now) => HappinessMetric.GetValue(now, -Kind.HappinessRateInSeconds);
 
-        public UserPetMetricValue UpdatedHappiness(DateTime now, double amount) => HappinessMetric.Updated(now, Kind.HappinessRateInSeconds, amount);
+        public UserPetMetricValue UpdatedHappiness(DateTime now, double amount) => HappinessMetric.Updated(now, -Kind.HappinessRateInSeconds, amount);
     }
 }

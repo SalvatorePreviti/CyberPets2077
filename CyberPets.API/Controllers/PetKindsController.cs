@@ -12,9 +12,9 @@ namespace CyberPets.API.Controllers
     [Route("/[controller]")]
     public class PetKindsController : ControllerBase
     {
-        private readonly PetKinds _petKinds;
+        private readonly PetKindsList _petKinds;
 
-        public PetKindsController(PetKinds petKinds)
+        public PetKindsController(PetKindsList petKinds)
         {
             _petKinds = petKinds;
         }

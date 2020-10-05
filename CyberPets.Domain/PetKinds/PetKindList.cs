@@ -4,11 +4,14 @@ using System.Linq;
 
 namespace CyberPets.Domain.PetKinds
 {
-    public class PetKinds
+    /// <summary>
+    /// Keep the list of supported pet kinds and allow finding them by name.
+    /// </summary>
+    public class PetKindsList
     {
         private readonly IReadOnlyDictionary<string, PetKind> _byName;
 
-        public PetKinds(IEnumerable<PetKind> kinds)
+        public PetKindsList(IEnumerable<PetKind> kinds)
         {
             _byName = new Dictionary<string, PetKind>(kinds.Select(kind => KeyValuePair.Create(kind.Name, kind)), StringComparer.InvariantCultureIgnoreCase);
         }

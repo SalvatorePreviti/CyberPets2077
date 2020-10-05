@@ -21,7 +21,7 @@ namespace CyberPets.Domain.UserPets
         }
 
         public readonly int GetValue(DateTime now, double rateInSeonds) =>
-            (int)Math.Clamp(LastValue + ((LastUpdate - now).TotalSeconds / rateInSeonds), MinValue, MaxValue);
+            (int)Math.Clamp(LastValue + ((now - LastUpdate).TotalSeconds / rateInSeonds), MinValue, MaxValue);
 
         public readonly UserPetMetricValue Updated(DateTime now, double rateInSeconds, double amount) =>
             new UserPetMetricValue(now, GetValue(now, rateInSeconds) + amount);

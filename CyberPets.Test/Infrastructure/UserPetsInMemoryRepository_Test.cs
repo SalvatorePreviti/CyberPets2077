@@ -6,7 +6,7 @@ using CyberPets.Domain.UserPets;
 using CyberPets.Infrastructure;
 using Xunit;
 
-namespace CyberPets.Test.UserPetsAPI
+namespace CyberPets.Test.Infrastructure
 {
     public class UserPetsInMemoryRepository_Test
     {

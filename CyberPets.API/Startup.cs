@@ -28,7 +28,7 @@ namespace CyberPets.API
 
             services.AddSingleton<IUserPetsRepository, UserPetsInMemoryRepository>();
             services.AddSingleton<ITimeProvider, SystemTimeProvider>();
-            services.AddSingleton<PetKinds>(new PetKinds(PetKind.KnownKinds));
+            services.AddSingleton<PetKindsList>(new PetKindsList(PetKind.KnownKinds));
             services.AddSingleton<UserPetsService>();
 
             // Add Swashbuckle swagger generator for live documentation
