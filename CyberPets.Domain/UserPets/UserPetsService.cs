@@ -19,32 +19,31 @@ namespace CyberPets.API.Services
             _repository = repository;
         }
 
-        public Task<IEnumerable<UserPetEntity>> List(string userId) =>
-            _repository.List(userId);
+        public Task<IEnumerable<UserPetEntity>> ListByUserId(string userId) =>
+            _repository.ListByUserId(userId);
 
-        public Task<UserPetEntity> GetOne(string userId, Guid id) =>
-            _repository.GetOne(userId, id);
+        public Task<UserPetEntity?> GetById(Guid id) =>
+            _repository.GetById(id);
 
-        public async Task<UserPetEntity> Create(string userId, Guid id, PetKind kind)
+        public async Task<UserPetEntity> Create(string userId, PetKind kind)
         {
             var pet = new UserPetEntity(
                 userId: userId,
-                id: id,
+                id: Guid.NewGuid(),
                 creationDate: _timeProvider.Now(),
                 kind: kind
             );
-
-            await _repository.InsertOne(pet);
+            await _repository.Insert(pet);
             return pet;
         }
 
-        public Task<bool> DeleteOne(string userId, Guid id) =>
-            _repository.DeleteOne(userId, id);
+        public Task<bool> DeleteById(Guid id) =>
+            _repository.DeleteById(id);
 
         public async Task<bool> Caress(UserPetEntity pet) =>
-            pet != null && await _repository.UpdateHappinessMetric(pet.UserId, pet.Id, pet.HappinessMetric, pet.UpdatedHappiness(_timeProvider.Now()));
+            pet != null && await _repository.UpdateHappiness(pet.Id, pet.HappinessMetric, pet.UpdatedHappiness(_timeProvider.Now(), 1));
 
         public async Task<bool> Feed(UserPetEntity pet) =>
-            pet != null && await _repository.UpdateHungerMetric(pet.UserId, pet.Id, pet.HungerMetric, pet.UpdatedHunger(_timeProvider.Now()));
+            pet != null && await _repository.UpdateHunger(pet.Id, pet.HungerMetric, pet.UpdatedHunger(_timeProvider.Now(), 1));
     }
 }

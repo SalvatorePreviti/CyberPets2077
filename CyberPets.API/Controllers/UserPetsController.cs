@@ -2,10 +2,12 @@
 using System.Linq;
 using System.Threading.Tasks;
 using CyberPets.Domain;
-using CyberPets.API.Models;
 using CyberPets.API.Models.UserPets;
 using CyberPets.API.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace CyberPets.API.Controllers
 {
@@ -13,6 +15,8 @@ namespace CyberPets.API.Controllers
     [Route("/[controller]")]
     public class UserPetsController : ControllerBase
     {
+        public const string UserIdHeader = "X-USER-ID";
+
         private readonly ITimeProvider _timeProvider;
         private readonly PetKinds _petKinds;
         private readonly UserPetsService _userPetsService;
@@ -25,74 +29,102 @@ namespace CyberPets.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ListResponse<UserPetResponse>> List([FromForm] UserRequest userRequest)
+        [Description("Lists all the pets owned by a user.")]
+        public async Task<IEnumerable<UserPetResponse>> List(
+            [FromHeader(Name = UserIdHeader), Required] string userId
+        )
         {
-            var pets = await _userPetsService.List(userRequest.UserId);
+            var pets = await _userPetsService.ListByUserId(userId);
             var now = _timeProvider.Now();
-            return new ListResponse<UserPetResponse> { List = pets.Select(pet => pet.ToUserPetResponse(now)) };
+            return pets.Select(pet => pet.ToUserPetResponse(now));
         }
 
         [HttpGet, Route("{id}")]
-        public async Task<ActionResult<UserPetResponse>> GetOne([FromForm] UserRequest userRequest, [FromRoute] Guid id)
+        public async Task<ActionResult<UserPetResponse>> GetOne(
+            [FromHeader(Name = UserIdHeader), Required] string userId,
+            [FromRoute] Guid id
+        )
         {
-            var pet = await _userPetsService.GetOne(userRequest.UserId, id);
+            var pet = await _userPetsService.GetById(id);
             if (pet == null)
-            {
                 return NotFound("Pet not found");
-            }
+
+            if (pet.UserId != userId)
+                return Unauthorized();
+
             return Ok(pet.ToUserPetResponse(_timeProvider.Now()));
         }
 
         [HttpPost]
-        public async Task<ActionResult<UserPetResponse>> Create([FromForm] UserRequest userRequest, [FromBody] UserPetsCreateRequest request)
+        public async Task<ActionResult<UserPetResponse>> Create(
+            [FromHeader(Name = UserIdHeader), Required] string userId,
+            [FromBody] UserPetsCreateRequest request
+        )
         {
-            var petKind = _petKinds.GetByName(request.Kind);
-            if (petKind == null)
-            {
-                return BadRequest("Unknown pet kind.");
-            }
-            var pet = await _userPetsService.Create(userRequest.UserId, Guid.NewGuid(), petKind);
+            var kind = _petKinds.GetByName(request.Kind);
+            if (kind == null)
+                return BadRequest("Unknown pet kind");
+
+            var pet = await _userPetsService.Create(userId, kind);
             return Ok(pet.ToUserPetResponse(_timeProvider.Now()));
         }
 
         [HttpDelete, Route("{id}")]
-        public async Task<ActionResult> Delete([FromForm] UserRequest userRequest, [FromRoute] Guid id)
+        public async Task<ActionResult> Delete(
+            [FromHeader(Name = UserIdHeader), Required] string userId,
+            [FromRoute] Guid id
+        )
         {
-            if (!await _userPetsService.DeleteOne(userRequest.UserId, id))
-            {
+            var pet = await _userPetsService.GetById(id);
+
+            if (pet == null)
                 return NotFound();
-            }
+
+            if (pet.UserId != userId)
+                return Unauthorized();
+
+            if (!await _userPetsService.DeleteById(id))
+                return NotFound();
+
             return Ok();
         }
 
         [HttpPut, Route("{id}/caress")]
-        public async Task<ActionResult> Caress([FromForm] UserRequest userRequest, [FromRoute] Guid id)
+        public async Task<ActionResult> Caress(
+            [FromHeader(Name = UserIdHeader), Required] string userId,
+            [FromRoute] Guid id
+        )
         {
-            var pet = await _userPetsService.GetOne(userRequest.UserId, id);
+            var pet = await _userPetsService.GetById(id);
             if (pet == null)
-            {
                 return NotFound();
-            }
+
+            if (pet.UserId != userId)
+                return Unauthorized();
+
             if (!await _userPetsService.Caress(pet))
-            {
                 return new StatusCodeResult(429);
-            }
-            return NoContent();
+
+            return Ok();
         }
 
         [HttpPut, Route("{id}/feed")]
-        public async Task<ActionResult> Feed([FromForm] UserRequest userRequest, [FromRoute] Guid id)
+        public async Task<ActionResult> Feed(
+            [FromHeader(Name = UserIdHeader), Required] string userId,
+            [FromRoute] Guid id
+        )
         {
-            var pet = await _userPetsService.GetOne(userRequest.UserId, id);
+            var pet = await _userPetsService.GetById(id);
             if (pet == null)
-            {
                 return NotFound();
-            }
+
+            if (pet.UserId != userId)
+                return Unauthorized();
+
             if (!await _userPetsService.Feed(pet))
-            {
                 return new StatusCodeResult(429);
-            }
-            return NoContent();
+
+            return Ok();
         }
     }
 }

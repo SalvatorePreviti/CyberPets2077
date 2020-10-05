@@ -16,13 +16,13 @@ namespace CyberPets.Test.UserPetsAPI
         [Fact]
         public async Task Returns_an_empty_list_if_the_user_has_no_pets()
         {
-            Assert.Empty((await _service.List("UNKNOWN")).List);
+            Assert.Empty((await _service.ListByUserId("UNKNOWN")));
         }
 
         [Fact]
         public async Task Returns_a_list_of_pets()
         {
-            var items = (await _service.List("user1")).List;
+            var items = (await _service.ListByUserId("user1"));
             Assert.Empty(items);
         }
     }

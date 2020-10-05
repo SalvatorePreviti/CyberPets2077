@@ -7,16 +7,16 @@ namespace CyberPets.Infrastructure
 {
     public interface IUserPetsRepository
     {
-        Task<IEnumerable<UserPetEntity>> List(string userId);
+        Task Insert(UserPetEntity pet);
 
-        Task<UserPetEntity> GetOne(string userId, Guid id);
+        Task<UserPetEntity?> GetById(Guid id);
 
-        Task<bool> DeleteOne(string userId, Guid id);
+        Task<IEnumerable<UserPetEntity>> ListByUserId(string userId);
 
-        Task InsertOne(UserPetEntity pet);
+        Task<bool> DeleteById(Guid id);
 
-        Task<bool> UpdateHappinessMetric(string userId, Guid id, UserPetMetricValue oldValue, UserPetMetricValue newValue);
+        Task<bool> UpdateHappiness(Guid id, UserPetMetricValue oldValue, UserPetMetricValue newValue);
 
-        Task<bool> UpdateHungerMetric(string userId, Guid id, UserPetMetricValue oldValue, UserPetMetricValue newValue);
+        Task<bool> UpdateHunger(Guid id, UserPetMetricValue oldValue, UserPetMetricValue newValue);
     }
 }

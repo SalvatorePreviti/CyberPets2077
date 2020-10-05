@@ -13,7 +13,8 @@ namespace CyberPets.Domain
             _byName = new Dictionary<string, PetKind>(kinds.Select(kind => KeyValuePair.Create(kind.Name, kind)), StringComparer.InvariantCultureIgnoreCase);
         }
 
-        public PetKind GetByName(string name) => _byName.GetValueOrDefault(name);
+        public PetKind? GetByName(string? name) =>
+            name != null ? _byName.GetValueOrDefault(name) : null;
 
         public IEnumerable<PetKind> Values { get => _byName.Values; }
     }

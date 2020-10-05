@@ -7,7 +7,7 @@ namespace CyberPets.API
     public static class PetKindMapper
     {
         public static PetKindResponse ToPetKindResponse(this PetKind kind) =>
-             kind == null ? null : new PetKindResponse
+             new PetKindResponse
              {
                  Name = kind.Name,
                  HungerRateInSeconds = kind.HungerRateInSeconds,

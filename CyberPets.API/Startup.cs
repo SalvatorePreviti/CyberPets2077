@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using CyberPets.Infrastructure;
-using CyberPets.Domain;
 using CyberPets.API.Services;
+using CyberPets.Domain;
+using CyberPets.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -53,7 +50,8 @@ namespace CyberPets.API
             });
 
             // Add Swashbuckle swagger generator for live documentation
-            app.UseSwagger().UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CyberPets.Api"));
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CyberPets.Api"));
         }
     }
 }

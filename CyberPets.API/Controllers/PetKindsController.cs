@@ -2,8 +2,8 @@ using CyberPets.Domain;
 using CyberPets.API.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using CyberPets.API.Models;
 using System.Linq;
+using System.Collections.Generic;
 using CyberPets.API.Models.UserPets;
 
 namespace CyberPets.API.Controllers
@@ -21,6 +21,6 @@ namespace CyberPets.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ListResponse<PetKindResponse> List() => new ListResponse<PetKindResponse> { List = _petKinds.Values.Select(kind => kind.ToPetKindResponse()) };
+        public IEnumerable<PetKindResponse> List() => _petKinds.Values.Select(kind => kind.ToPetKindResponse());
     }
 }
