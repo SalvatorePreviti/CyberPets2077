@@ -18,17 +18,23 @@ namespace CyberPets.Test.Infrastructure
         }
 
         [Fact]
+        public async Task Get_an_item_that_does_not_exists_returns_null()
+        {
+            Assert.Null(await _repository.GetById(Guid.NewGuid()));
+        }
+
+        [Fact]
+        public async Task ListByUserId_returns_an_empty_array_for_not_existing_user()
+        {
+            Assert.Empty(await _repository.ListByUserId("not-existing-user-id"));
+        }
+
+        [Fact]
         public async Task Insert_throws_if_id_already_exists()
         {
             var id = new Guid("76aaa84f-ee34-4935-925f-f2fe68bb2e80");
             await _repository.Insert(new UserPetEntity(userId: "user123", id: id, creationDate: DateTime.Now, kind: PetKind.Cat));
             await Assert.ThrowsAsync<InvalidOperationException>(() => _repository.Insert(new UserPetEntity(userId: "user456", id: id, creationDate: DateTime.Now, kind: PetKind.Dog)));
-        }
-
-        [Fact]
-        public async Task Get_an_item_that_does_not_exists_returns_null()
-        {
-            Assert.Null(await _repository.GetById(Guid.NewGuid()));
         }
 
         [Fact]
@@ -53,12 +59,6 @@ namespace CyberPets.Test.Infrastructure
             Assert.Equal(UserPetMetricValue.NeutralValue, queried.HungerMetric.LastValue);
             Assert.Equal(creationDate, queried.HappinessMetric.LastUpdate);
             Assert.Equal(UserPetMetricValue.NeutralValue, queried.HappinessMetric.LastValue);
-        }
-
-        [Fact]
-        public async Task ListByUserId_returns_an_empty_array_for_not_existing_user()
-        {
-            Assert.Empty(await _repository.ListByUserId("not-existing-user-id"));
         }
 
         [Fact]

@@ -18,11 +18,11 @@ namespace CyberPets.Domain.UserPets
             _repository = repository;
         }
 
-        public Task<IEnumerable<UserPetEntity>> ListByUserId(string userId) =>
-            _repository.ListByUserId(userId);
-
         public Task<UserPetEntity?> GetById(Guid id) =>
             _repository.GetById(id);
+
+        public Task<IEnumerable<UserPetEntity>> ListByUserId(string userId) =>
+            _repository.ListByUserId(userId);
 
         public async Task<UserPetEntity> Create(string userId, PetKind kind)
         {
