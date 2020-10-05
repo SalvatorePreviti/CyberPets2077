@@ -1,11 +1,12 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace CyberPets.API.Models.UserPets
+namespace CyberPets.API.Models
 {
     public class PetKindResponse
     {
-        public string Name { get; set; } = "";
+        [Required]
+        public string? Name { get; set; }
 
         public double HungerRateInSeconds { get; set; }
 

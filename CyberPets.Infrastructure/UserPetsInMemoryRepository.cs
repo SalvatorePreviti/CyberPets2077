@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using CyberPets.Domain;
+using CyberPets.Domain.PetKinds;
+using CyberPets.Domain.UserPets;
 
 namespace CyberPets.Infrastructure
 {
@@ -58,11 +59,12 @@ namespace CyberPets.Infrastructure
 
         private static bool UpdateInMemoryMetric(ref InMemoryPetMetric field, UserPetMetricValue oldValue, UserPetMetricValue newValue)
         {
-            var oldInstance = Volatile.Read(ref field);
-            return
-                oldInstance.Metric.LastUpdate == newValue.LastUpdate &&
-                oldInstance.Metric.LastValue == newValue.LastValue &&
-                oldInstance == Interlocked.CompareExchange(ref field, new InMemoryPetMetric(newValue), field);
+            var old = Volatile.Read(ref field);
+
+            if (old.Metric.LastUpdate != oldValue.LastUpdate || old.Metric.LastValue != oldValue.LastValue)
+                return false;
+
+            return old == Interlocked.CompareExchange(ref field, new InMemoryPetMetric(newValue), old);
         }
 
         private class InMemoryPet

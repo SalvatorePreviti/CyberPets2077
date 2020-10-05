@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CyberPets.Infrastructure;
-using CyberPets.Domain;
+using CyberPets.Domain.PetKinds;
+using CyberPets.Domain.Time;
 
-namespace CyberPets.API.Services
+namespace CyberPets.Domain.UserPets
 {
-
     public class UserPetsService
     {
         private readonly ITimeProvider _timeProvider;

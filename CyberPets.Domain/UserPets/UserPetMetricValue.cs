@@ -1,26 +1,29 @@
 using System;
 
-public struct UserPetMetricValue
+namespace CyberPets.Domain.UserPets
 {
-    public const double MinValue = -20;
-
-    public const double DefaultValue = 0;
-
-    public const double MaxValue = +20;
-
-    public DateTime LastUpdate { get; }
-
-    public double LastValue { get; }
-
-    public UserPetMetricValue(DateTime lastUpdate, double lastValue = DefaultValue)
+    public struct UserPetMetricValue
     {
-        LastUpdate = lastUpdate;
-        LastValue = Math.Clamp(lastValue, MinValue, MaxValue);
+        public const int MinValue = -20;
+
+        public const int NeutralValue = 0;
+
+        public const int MaxValue = +20;
+
+        public DateTime LastUpdate { get; }
+
+        public double LastValue { get; }
+
+        public UserPetMetricValue(DateTime lastUpdate, double lastValue = NeutralValue)
+        {
+            LastUpdate = lastUpdate;
+            LastValue = Math.Clamp(lastValue, MinValue, MaxValue);
+        }
+
+        public readonly int GetValue(DateTime now, double rateInSeonds) =>
+            (int)Math.Clamp(LastValue + ((LastUpdate - now).TotalSeconds / rateInSeonds), MinValue, MaxValue);
+
+        public readonly UserPetMetricValue Updated(DateTime now, double rateInSeconds, double amount) =>
+            new UserPetMetricValue(now, GetValue(now, rateInSeconds) + amount);
     }
-
-    public readonly double GetValue(DateTime now, double rateInSeonds) =>
-        Math.Clamp(LastValue + (int)((LastUpdate - now).TotalSeconds / rateInSeonds), MinValue, MaxValue);
-
-    public readonly UserPetMetricValue Updated(DateTime now, double rateInSeconds, double amount) =>
-        new UserPetMetricValue(now, GetValue(now, rateInSeconds) + amount);
 }

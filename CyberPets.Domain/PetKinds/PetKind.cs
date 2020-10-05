@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace CyberPets.Domain
+namespace CyberPets.Domain.PetKinds
 {
     public class PetKind
     {
@@ -11,11 +11,11 @@ namespace CyberPets.Domain
 
         public double HappinessRateInSeconds { get; private set; }
 
-        public PetKind(string name, int hungerRateInSeconds, int happinessRateInSeconds)
+        public PetKind(string name, int hungerRateInSeconds, double happinessRateInSeconds)
         {
             if (String.IsNullOrWhiteSpace(name)) { throw new ArgumentNullException(nameof(name)); }
-            if (hungerRateInSeconds < 1) { throw new ArgumentOutOfRangeException(nameof(hungerRateInSeconds)); }
-            if (happinessRateInSeconds < 1) { throw new ArgumentOutOfRangeException(nameof(happinessRateInSeconds)); }
+            if (hungerRateInSeconds <= 0) { throw new ArgumentOutOfRangeException(nameof(hungerRateInSeconds)); }
+            if (happinessRateInSeconds <= 0) { throw new ArgumentOutOfRangeException(nameof(happinessRateInSeconds)); }
 
             Name = name;
             HungerRateInSeconds = hungerRateInSeconds;

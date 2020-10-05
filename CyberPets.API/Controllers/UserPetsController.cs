@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using CyberPets.Domain;
-using CyberPets.API.Models.UserPets;
-using CyberPets.API.Services;
+using CyberPets.API.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using CyberPets.Domain.UserPets;
+using CyberPets.Domain.PetKinds;
+using CyberPets.API.Mappers;
+using CyberPets.Domain.Time;
 
 namespace CyberPets.API.Controllers
 {

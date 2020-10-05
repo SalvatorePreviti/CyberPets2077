@@ -1,6 +1,7 @@
 using System;
+using CyberPets.Domain.PetKinds;
 
-namespace CyberPets.Domain
+namespace CyberPets.Domain.UserPets
 {
     public class UserPetEntity
     {
@@ -22,16 +23,16 @@ namespace CyberPets.Domain
             Id = id;
             CreationDate = creationDate;
             Kind = kind;
-            HungerMetric = hungerMetric ?? new UserPetMetricValue(CreationDate);
-            HappinessMetric = happinessMetric ?? new UserPetMetricValue(CreationDate);
+            HungerMetric = hungerMetric ?? new UserPetMetricValue(creationDate);
+            HappinessMetric = happinessMetric ?? new UserPetMetricValue(creationDate);
         }
 
-        public double GetHunger(DateTime now) => HungerMetric.GetValue(now, Kind.HungerRateInSeconds);
+        public int GetHunger(DateTime now) => HungerMetric.GetValue(now, -Kind.HungerRateInSeconds);
 
-        public UserPetMetricValue UpdatedHunger(DateTime now, double amount) => HungerMetric.Updated(now, Kind.HungerRateInSeconds, -amount);
+        public UserPetMetricValue UpdatedHunger(DateTime now, double amount) => HungerMetric.Updated(now, -Kind.HungerRateInSeconds, -amount);
 
-        public double GetHappiness(DateTime now) => HappinessMetric.GetValue(now, -Kind.HappinessRateInSeconds);
+        public int GetHappiness(DateTime now) => HappinessMetric.GetValue(now, Kind.HappinessRateInSeconds);
 
-        public UserPetMetricValue UpdatedHappiness(DateTime now, double amount) => HappinessMetric.Updated(now, -Kind.HappinessRateInSeconds, amount);
+        public UserPetMetricValue UpdatedHappiness(DateTime now, double amount) => HappinessMetric.Updated(now, Kind.HappinessRateInSeconds, amount);
     }
 }

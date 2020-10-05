@@ -1,8 +1,9 @@
 using System;
 using CyberPets.Domain;
-using CyberPets.API.Models.UserPets;
+using CyberPets.API.Models;
+using CyberPets.Domain.UserPets;
 
-namespace CyberPets.API
+namespace CyberPets.API.Mappers
 {
     public static class UserPetMapper
     {

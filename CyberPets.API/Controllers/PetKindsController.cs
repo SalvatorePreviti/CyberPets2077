@@ -1,10 +1,10 @@
-using CyberPets.Domain;
-using CyberPets.API.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Collections.Generic;
-using CyberPets.API.Models.UserPets;
+using CyberPets.API.Models;
+using CyberPets.Domain.PetKinds;
+using CyberPets.API.Mappers;
 
 namespace CyberPets.API.Controllers
 {
@@ -14,7 +14,7 @@ namespace CyberPets.API.Controllers
     {
         private readonly PetKinds _petKinds;
 
-        public PetKindsController(UserPetsService userPetsService, PetKinds petKinds)
+        public PetKindsController(PetKinds petKinds)
         {
             _petKinds = petKinds;
         }

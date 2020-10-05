@@ -1,6 +1,6 @@
 using System;
 
-namespace CyberPets.API.Services
+namespace CyberPets.Domain.Time
 {
     public interface ITimeProvider
     {

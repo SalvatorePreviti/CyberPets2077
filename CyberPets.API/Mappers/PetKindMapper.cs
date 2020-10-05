@@ -1,8 +1,8 @@
-using System;
 using CyberPets.Domain;
-using CyberPets.API.Models.UserPets;
+using CyberPets.API.Models;
+using CyberPets.Domain.PetKinds;
 
-namespace CyberPets.API
+namespace CyberPets.API.Mappers
 {
     public static class PetKindMapper
     {

@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace CyberPets.API.Models.UserPets
+namespace CyberPets.API.Models
 {
     public class UserPetsCreateRequest
     {

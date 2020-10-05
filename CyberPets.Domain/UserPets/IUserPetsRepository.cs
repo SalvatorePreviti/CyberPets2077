@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CyberPets.Domain;
 
-namespace CyberPets.Infrastructure
+namespace CyberPets.Domain.UserPets
 {
     public interface IUserPetsRepository
     {

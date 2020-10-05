@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CyberPets.Domain
+namespace CyberPets.Domain.PetKinds
 {
     public class PetKinds
     {
-        private IReadOnlyDictionary<string, PetKind> _byName;
+        private readonly IReadOnlyDictionary<string, PetKind> _byName;
 
         public PetKinds(IEnumerable<PetKind> kinds)
         {
