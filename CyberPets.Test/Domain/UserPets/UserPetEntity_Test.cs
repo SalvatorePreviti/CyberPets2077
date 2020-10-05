@@ -15,8 +15,8 @@ namespace CyberPets.Test.Domain.UserPets
             var id = Guid.NewGuid();
             var creationDate = DateTime.Now;
 
-            var hungerMetric = new UserPetMetricValue(creationDate.AddDays(1), 1.5);
-            var happinessMetric = new UserPetMetricValue(creationDate.AddHours(1), 2.5);
+            var hungerMetric = new UserPetMetricValue(creationDate.AddDays(1), 1);
+            var happinessMetric = new UserPetMetricValue(creationDate.AddHours(1), 2);
 
             var entity = new UserPetEntity(
                 userId: userId,
@@ -64,7 +64,7 @@ namespace CyberPets.Test.Domain.UserPets
         [Fact]
         public void GetHunger_increases_over_time()
         {
-            var kind = new PetKind(name: "custom", hungerRateInSeconds: 2.5, happinessRateInSeconds: 2.5);
+            var kind = new PetKind(name: "custom", hungerRateInSeconds: 2, happinessRateInSeconds: 2);
             var startTime = DateTime.Now;
             var entity = new UserPetEntity(
                 userId: "user456",
@@ -75,7 +75,7 @@ namespace CyberPets.Test.Domain.UserPets
 
             Assert.Equal(UserPetMetricValue.NeutralValue, entity.GetHunger(startTime));
 
-            Assert.Equal(UserPetMetricValue.NeutralValue, entity.GetHunger(startTime.AddSeconds(2.4)));
+            Assert.Equal(UserPetMetricValue.NeutralValue, entity.GetHunger(startTime.AddSeconds(1.8)));
             Assert.Equal(UserPetMetricValue.NeutralValue + 1, entity.GetHunger(startTime.AddSeconds(2.5)));
             Assert.Equal(UserPetMetricValue.NeutralValue + 1, entity.GetHunger(startTime.AddSeconds(2.6)));
 
@@ -87,7 +87,7 @@ namespace CyberPets.Test.Domain.UserPets
         [Fact]
         public void UpdatedHunger_decreases_hunger()
         {
-            var kind = new PetKind(name: "custom", hungerRateInSeconds: 2.5, happinessRateInSeconds: 2.5);
+            var kind = new PetKind(name: "custom", hungerRateInSeconds: 2, happinessRateInSeconds: 2);
             var startTime = DateTime.Now;
             var entity = new UserPetEntity(
                 userId: "user456",
@@ -120,7 +120,7 @@ namespace CyberPets.Test.Domain.UserPets
         [Fact]
         public void GetHappiness_decreases_over_time()
         {
-            var kind = new PetKind(name: "custom", hungerRateInSeconds: 2.5, happinessRateInSeconds: 2.5);
+            var kind = new PetKind(name: "custom", hungerRateInSeconds: 2, happinessRateInSeconds: 2);
             var startTime = DateTime.Now;
             var entity = new UserPetEntity(
                 userId: "user456",
@@ -131,7 +131,7 @@ namespace CyberPets.Test.Domain.UserPets
 
             Assert.Equal(UserPetMetricValue.NeutralValue, entity.GetHappiness(startTime));
 
-            Assert.Equal(UserPetMetricValue.NeutralValue, entity.GetHappiness(startTime.AddSeconds(2.4)));
+            Assert.Equal(UserPetMetricValue.NeutralValue, entity.GetHappiness(startTime.AddSeconds(1.8)));
             Assert.Equal(UserPetMetricValue.NeutralValue - 1, entity.GetHappiness(startTime.AddSeconds(2.5)));
             Assert.Equal(UserPetMetricValue.NeutralValue - 1, entity.GetHappiness(startTime.AddSeconds(2.6)));
 
@@ -143,7 +143,7 @@ namespace CyberPets.Test.Domain.UserPets
         [Fact]
         public void UpdatedHappiness_increases_happiness()
         {
-            var kind = new PetKind(name: "custom", hungerRateInSeconds: 2.5, happinessRateInSeconds: 2.5);
+            var kind = new PetKind(name: "custom", hungerRateInSeconds: 2, happinessRateInSeconds: 2);
             var startTime = DateTime.Now;
             var entity = new UserPetEntity(
                 userId: "user456",

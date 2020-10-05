@@ -12,18 +12,18 @@ namespace CyberPets.Domain.UserPets
 
         public DateTime LastUpdate { get; }
 
-        public double LastValue { get; }
+        public int LastValue { get; }
 
-        public UserPetMetricValue(DateTime lastUpdate, double lastValue = NeutralValue)
+        public UserPetMetricValue(DateTime lastUpdate, int lastValue = NeutralValue)
         {
             LastUpdate = lastUpdate;
             LastValue = Math.Clamp(lastValue, MinValue, MaxValue);
         }
 
-        public readonly int GetValue(DateTime now, double rateInSeonds) =>
-            (int)Math.Clamp(LastValue + ((now - LastUpdate).TotalSeconds / rateInSeonds), MinValue, MaxValue);
+        public readonly int GetValue(DateTime now, int rateInSeonds) =>
+            Math.Clamp(LastValue + (int)((now - LastUpdate).TotalSeconds / rateInSeonds), MinValue, MaxValue);
 
-        public readonly UserPetMetricValue Updated(DateTime now, double rateInSeconds, double amount) =>
+        public readonly UserPetMetricValue Updated(DateTime now, int rateInSeconds, int amount) =>
             new UserPetMetricValue(now, GetValue(now, rateInSeconds) + amount);
     }
 }

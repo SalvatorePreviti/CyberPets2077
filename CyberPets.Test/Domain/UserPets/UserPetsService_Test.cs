@@ -113,11 +113,48 @@ namespace CyberPets.Test.Domain.UserPets
 
             Assert.Equal(UserPetMetricValue.NeutralValue + 1, pet.GetHappiness(time.Now()));
 
-            time.Value = time.Value.AddSeconds(0.1);
+            time.Value = time.Value.AddSeconds(1.5);
+            Assert.True(await service.Caress(pet));
+            pet = await service.GetById(pet.Id);
+
+            Assert.Equal(UserPetMetricValue.NeutralValue + 2, pet.GetHappiness(time.Now()));
+
+            time.Value = time.Value.AddSeconds(4);
             Assert.True(await service.Caress(pet));
             pet = await service.GetById(pet.Id);
 
             Assert.Equal(UserPetMetricValue.NeutralValue + 1, pet.GetHappiness(time.Now()));
+        }
+
+        [Fact]
+        public async Task Feed()
+        {
+            var kind = new PetKind("animalX", 2, 2);
+
+            var time = new TestTimeProvider();
+            var repo = new UserPetsInMemoryRepository();
+            var service = new UserPetsService(time, repo);
+
+            var pet = await service.Create(userId: "user", kind);
+
+            time.Value = time.Value.AddSeconds(1);
+
+            Assert.True(await service.Feed(pet));
+            pet = await service.GetById(pet.Id);
+
+            Assert.Equal(UserPetMetricValue.NeutralValue - 1, pet.GetHunger(time.Now()));
+
+            time.Value = time.Value.AddSeconds(1.5);
+            Assert.True(await service.Feed(pet));
+            pet = await service.GetById(pet.Id);
+
+            Assert.Equal(UserPetMetricValue.NeutralValue - 2, pet.GetHunger(time.Now()));
+
+            time.Value = time.Value.AddSeconds(4);
+            Assert.True(await service.Feed(pet));
+            pet = await service.GetById(pet.Id);
+
+            Assert.Equal(UserPetMetricValue.NeutralValue - 1, pet.GetHunger(time.Now()));
         }
     }
 }

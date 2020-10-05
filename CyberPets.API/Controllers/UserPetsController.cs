@@ -92,7 +92,7 @@ namespace CyberPets.API.Controllers
         }
 
         [HttpPut, Route("{id}/caress")]
-        public async Task<ActionResult> Caress(
+        public async Task<ActionResult<int>> Caress(
             [FromHeader(Name = UserIdHeader), Required] string userId,
             [FromRoute] Guid id
         )
@@ -104,14 +104,11 @@ namespace CyberPets.API.Controllers
             if (pet.UserId != userId)
                 return Unauthorized();
 
-            if (!await _userPetsService.Caress(pet))
-                return new StatusCodeResult(429);
-
-            return Ok();
+            return Ok(await _userPetsService.Caress(pet));
         }
 
         [HttpPut, Route("{id}/feed")]
-        public async Task<ActionResult> Feed(
+        public async Task<ActionResult<int>> Feed(
             [FromHeader(Name = UserIdHeader), Required] string userId,
             [FromRoute] Guid id
         )
@@ -123,10 +120,7 @@ namespace CyberPets.API.Controllers
             if (pet.UserId != userId)
                 return Unauthorized();
 
-            if (!await _userPetsService.Feed(pet))
-                return new StatusCodeResult(429);
-
-            return Ok();
+            return Ok(await _userPetsService.Feed(pet));
         }
     }
 }

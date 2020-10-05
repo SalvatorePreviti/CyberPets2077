@@ -7,8 +7,8 @@ namespace CyberPets.API.Models
         [Required]
         public string? Name { get; set; }
 
-        public double HungerRateInSeconds { get; set; }
+        public int HungerRateInSeconds { get; set; }
 
-        public double HappinessRateInSeconds { get; set; }
+        public int HappinessRateInSeconds { get; set; }
     }
 }

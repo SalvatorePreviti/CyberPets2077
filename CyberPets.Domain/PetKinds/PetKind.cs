@@ -10,11 +10,11 @@ namespace CyberPets.Domain.PetKinds
     {
         public string Name { get; private set; }
 
-        public double HungerRateInSeconds { get; private set; }
+        public int HungerRateInSeconds { get; private set; }
 
-        public double HappinessRateInSeconds { get; private set; }
+        public int HappinessRateInSeconds { get; private set; }
 
-        public PetKind(string name, double hungerRateInSeconds, double happinessRateInSeconds)
+        public PetKind(string name, int hungerRateInSeconds, int happinessRateInSeconds)
         {
             if (String.IsNullOrWhiteSpace(name)) { throw new ArgumentNullException(nameof(name)); }
             if (hungerRateInSeconds <= 0) { throw new ArgumentOutOfRangeException(nameof(hungerRateInSeconds)); }
