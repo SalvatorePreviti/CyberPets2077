@@ -79,9 +79,9 @@ You can see an example implementation in UserPetsInMemoryRepository that uses [I
 
 There are few databases that would perfectly fit the scenario, the choice depends on several factors that should be discussed, the required level of concurrency or atomicity, consistency or availability.
 
-- SQL: Is ACID and offers the best consistency, but not the bet availability or scalability. Cannot be scaled horizontally easily.
+- SQL: Is ACID and offers the best consistency but cannot be scaled horizontally easily if the number of concurrent requests is high.
 - MongoDB/DocumentDB: a good option, but can be difficult to scale horizontally.
-- Redis cluster: Very fast, can be very expensive and we may face consistency issues.
+- Redis cluster: Very fast, can be very expensive and we may face consistency issues, it may or not may be a good choice depending on the requirements.
 - etcd: A distributed, reliable key-value store. Is fast and scales well.
 
 Using an SQL repository implementation, optimistic locking update would be something like this [pseudocode]:
