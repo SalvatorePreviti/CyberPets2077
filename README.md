@@ -47,7 +47,7 @@ Let's assume that we have a very modern and secure [API Gateway](https://aws.ama
 
 Let's assume that the API Gateway or ALB is configured to verify the identity of the user (for example with a JWT token) and to set the header X-USER-ID with a valid user id if the user is authenticated (could be an authorizer lambda, for example). All APIs that require an authenticated user will receive a valid X-USER-ID header and will not be invoked if the user is not authenticated.
 
-To simplify the development authorization is just executed using a bit of logic in the Controller class, a more complicated and secure solution with for example [ASP.NET Core Identity](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/secure-net-microservices-web-applications/) would have been probably out of scope for this demo.
+To simplify the development authorization is just executed using a bit of logic in the Controller class. One option would be to use [ASP.NET Core Identity](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/secure-net-microservices-web-applications/) but I believe it would be out scope for this demo.
 
 ## The APIs
 
@@ -109,6 +109,7 @@ To make the code easily testable, ITimeProvider is used to get the current time 
 Unfortunately the specifications were quite vague in terms of where this service would run, how many and what kind of consumers it would have.
 However we could already discuss some possible improvements:
 
+- As stated before, a proper and well thought auth system.
 - A maximum number of pets should be decided to avoid the possibility of a single user creating too many entries filling up the database or slowing down the system.
 - APIs could follow [HATEOAS](https://en.wikipedia.org/wiki/HATEOAS)/[HAL](https://en.wikipedia.org/wiki/Hypertext_Application_Language) to better support versioning and remove the responsibility of the client of generating URLs.
 - Integration and basic E2E testing is not present and should be implemented before going live.
