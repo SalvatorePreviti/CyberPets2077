@@ -1,6 +1,8 @@
-# _`CyberPets 2077`_
+# CyberPets 2077
 
 ## Usage
+
+The project requires dotnetcore 3.1 and was written using Visual Studio Code.
 
 - To run the project.
 
@@ -98,8 +100,8 @@ The solution adopted here is to use linear interpolation when computing current 
 UserPetMetricValue.cs encapsulate in a value type the math required to do this.
 
 ```csharp
-    public readonly int GetValue(DateTime now, int rateInSeonds) =>
-        Math.Clamp(LastValue + (int)((now - LastUpdate).TotalSeconds / rateInSeonds), MinValue, MaxValue);
+    public readonly int GetValue(DateTime now, int rateInSeconds) =>
+        Math.Clamp(LastValue + (int)((now - LastUpdate).TotalSeconds / rateInSeconds), MinValue, MaxValue);
 ```
 
 To make the code easily testable, ITimeProvider is used to get the current time and can be mocked during tests.
@@ -109,7 +111,8 @@ To make the code easily testable, ITimeProvider is used to get the current time 
 Unfortunately the specifications were quite vague in terms of where this service would run, how many and what kind of consumers it would have.
 However we could already discuss some possible improvements:
 
-- As stated before, a proper and well thought auth system.
+- As stated before, a proper and well thought auth system and a proper IRepository implementation with a real database.
+- Refactoring, especially in the tests there is quite a lot of repetition and not everything is covered, but let's assume is enough for a demo.
 - A maximum number of pets should be decided to avoid the possibility of a single user creating too many entries filling up the database or slowing down the system.
 - APIs could follow [HATEOAS](https://en.wikipedia.org/wiki/HATEOAS)/[HAL](https://en.wikipedia.org/wiki/Hypertext_Application_Language) to better support versioning and remove the responsibility of the client of generating URLs.
 - Integration and basic E2E testing is not present and should be implemented before going live.
